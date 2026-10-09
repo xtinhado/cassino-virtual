@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casino Virtual</title>
+<style>
+body{margin:0;background:#10131b;color:white;font-family:Arial,sans-serif;text-align:center;padding:20px}
+h1{color:#ffd166}
+.card{background:#202635;border:1px solid #39445a;border-radius:16px;padding:20px;margin:18px auto;max-width:420px}
+.saldo{color:#6ee7a8;font-size:24px;font-weight:bold}
+button{background:#e8b949;color:#171717;border:0;border-radius:10px;padding:14px;margin:6px;font-weight:bold;font-size:16px}
+.slot{font-size:48px;background:#0b0e14;border-radius:12px;padding:15px}
+small{color:#bac2d2}
+</style>
+</head>
+<body>
+<h1>🎰 CASINO VIRTUAL</h1>
+<p>Divirta-se com fichas fictícias!</p>
+<div class="card">
+<p>Seu saldo virtual</p>
+<div class="saldo" id="saldo">1000 fichas</div>
+</div>
+<div class="card">
+<h2>🎰 Caça-níquel</h2>
+<div class="slot" id="slot">🍒 ⭐ 🍋</div>
+<p>Aposta: 10 fichas</p>
+<button onclick="jogar()">GIRAR</button>
+<p id="resultado"></p>
+</div>
+<div class="card">
+<h2>🎡 Roleta de cores</h2>
+<p>Escolha uma cor. Prêmio: 2x a aposta se acertar.</p>
+<button onclick="roleta('Vermelho')">🔴 Vermelho</button>
+<button onclick="roleta('Preto')">⚫ Preto</button>
+<p id="roletaResultado"></p>
+</div>
+<small>Jogo de entretenimento. Sem depósitos, saques ou dinheiro real.</small>
+<script>
+let saldo=1000;
+function atualizar(){document.getElementById('saldo').textContent=saldo+' fichas'}
+function jogar(){
+if(saldo<10){document.getElementById('resultado').textContent='Fichas insuficientes!';return}
+saldo-=10;
+let simbolos=['🍒','⭐','🍋','🔔','💎'];
+let a=simbolos[Math.floor(Math.random()*simbolos.length)];
+let b=simbolos[Math.floor(Math.random()*simbolos.length)];
+let c=simbolos[Math.floor(Math.random()*simbolos.length)];
+document.getElementById('slot').textContent=a+' '+b+' '+c;
+if(a===b&&b===c){saldo+=100;document.getElementById('resultado').textContent='Jackpot! +100 fichas';}
+else if(a===b||b===c||a===c){saldo+=20;document.getElementById('resultado').textContent='Você ganhou 20 fichas!';}
+else{document.getElementById('resultado').textContent='Não foi dessa vez!';}
+atualizar();
+}
+function roleta(cor){
+if(saldo<10){document.getElementById('roletaResultado').textContent='Fichas insuficientes!';return}
+saldo-=10;
+let sorteada=Math.random()<0.5?'Vermelho':'Preto';
+if(cor===sorteada){saldo+=20;document.getElementById('roletaResultado').textContent='Saiu '+sorteada+'! Você ganhou 20 fichas.';}
+else{document.getElementById('roletaResultado').textContent='Saiu '+sorteada+'. Tente novamente!';}
+atualizar();
+}
+</script>
+</body>
+</html>
