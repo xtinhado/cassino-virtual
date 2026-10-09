@@ -1,0 +1,111 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clube das Fichas</title>
+<style>
+body {
+  margin: 0;
+  padding: 20px;
+  background: #17112b;
+  color: white;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+main {
+  max-width: 400px;
+  margin: 30px auto;
+  padding: 24px;
+  background: #292044;
+  border-radius: 20px;
+}
+h1 { color: #ffd166; }
+#slots {
+  font-size: 38px;
+  background: #100d1b;
+  padding: 24px 5px;
+  border-radius: 12px;
+  margin: 25px 0;
+}
+button {
+  width: 100%;
+  padding: 15px;
+  border: 0;
+  border-radius: 12px;
+  background: #ffd166;
+  color: #201532;
+  font-size: 18px;
+  font-weight: bold;
+}
+button:disabled { opacity: .5; }
+small { color: #ddd5f2; }
+</style>
+</head>
+<body>
+<main>
+  <h1>🎰 Clube das Fichas</h1>
+  <p>Jogue por diversão!</p>
+  <p>Fichas: <strong id="saldo">100</strong></p>
+  <div id="slots">🍒 ⭐ 🍋</div>
+  <button id="botao" onclick="girar()">GIRAR</button>
+  <p id="msg">Você começa com 100 fichas fictícias.</p>
+  <small>Sem dinheiro real, depósitos ou saques.</small>
+</main>
+<script>
+let saldo = 100;
+let ocupado = false;
+const simbolos = ["🍒","⭐","🍋","🍇","🔔","🍉"];
+
+function girar() {
+  if (ocupado) return;
+  if (saldo < 10) {
+    document.getElementById("msg").textContent =
+      "Fim das fichas! Recarregue a página para reiniciar.";
+    return;
+  }
+
+  ocupado = true;
+  saldo -= 10;
+  document.getElementById("saldo").textContent = saldo;
+  document.getElementById("botao").disabled = true;
+  document.getElementById("msg").textContent = "Girando...";
+
+  const slots = document.getElementById("slots");
+  let contagem = 0;
+
+  const animacao = setInterval(() => {
+    slots.textContent = Array.from(
+      {length: 3},
+      () => simbolos[Math.floor(Math.random() * simbolos.length)]
+    ).join(" ");
+
+    contagem++;
+
+    if (contagem >= 12) {
+      clearInterval(animacao);
+      const r = Array.from(
+        {length: 3},
+        () => simbolos[Math.floor(Math.random() * simbolos.length)]
+      );
+      slots.textContent = r.join(" ");
+
+      if (r[0] === r[1] && r[1] === r[2]) {
+        saldo += 30;
+        document.getElementById("msg").textContent =
+          "Trinca! Você ganhou 30 fichas fictícias!";
+      } else {
+        document.getElementById("msg").textContent =
+          "Não foi dessa vez! Tente de novo.";
+      }
+
+      document.getElementById("saldo").textContent = saldo;
+      ocupado = false;
+      document.getElementById("botao").disabled = false;
+    }
+  }, 100);
+}
+</script>
+</body>
+</html>
